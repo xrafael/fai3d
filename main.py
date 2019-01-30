@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
     #Define some 3D augmentations
     aug_tfms_3D = [
-        #Rotate(45),
+        Rotate(45),
         #Flip(1),
         #Zoom(0.1,-0.1),
         Lighting(0.1,0.1),
