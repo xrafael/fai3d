@@ -1,5 +1,5 @@
 # fai3d
-A simple wrapper to 3D image augmentation for the fast.ai library.
+A simple wrapper to 3D image random augmentation for the fast.ai library.
 
 In the folder lib/ you will find dataset3D and transforms3D
 that are the main responsible to make the trick.
@@ -13,7 +13,7 @@ dummy but complete example of application of use. In this file the fast.ai
 library is used to build, find the learning rate, fit and visualize the results
 of training a basic 3D CNN classifier.
 
-To run the example, first check that you have fast.ai (version 0.7) is installed.
+To run the example, first check that you have fast.ai (version 0.7) installed.
 Then create a data folder and unzip the data.zip files in it. This zip file contains
 few 3D volumes stored in numpy arrays (32x32x32) and a csv file
 with the annotations for each volume (id, class).

@@ -19,7 +19,7 @@ def plots(ims, figsize=(12,6), rows=1, titles=None):
 if __name__ == '__main__':
 
     #Prepare paths to csv
-    PATH_CUBES_NEW = Path('data/cubes/')
+    PATH_CUBES_NEW = Path('data/')
     train_csv = PATH_CUBES_NEW/'train.csv'
     test_csv = PATH_CUBES_NEW/'test.csv'
     sub_train_csv = PATH_CUBES_NEW/'sample_train_local.csv'
@@ -33,11 +33,11 @@ if __name__ == '__main__':
     #Define some 3D augmentations
     aug_tfms_3D = [
         Flip(1),
-        #Zoom(0.5,0.),
-        #Lighting(0.5,0.5),
+        #Zoom(0,-0.5),
+        Lighting(0.3,0.3),
         #Stretch(1.5,0),,
         #Blur(2),
-        #Rotate(45),
+        Rotate(45),
         ]
 
     #Define data generator
