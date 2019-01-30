@@ -5,6 +5,6 @@
 
 /fastai
 
-/data
+
 /data/*
 !/data/*.zip
