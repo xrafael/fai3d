@@ -71,10 +71,10 @@ if __name__ == '__main__':
     print(model_summary(learn.model, [torch.rand(1, 1, learn.data.sz, learn.data.sz, learn.data.sz)]))
 
     #Find learning rate
-    #lrf = learn.lr_find()
+    lrf = learn.lr_find()
 
     #Train 3D model
-    #learn.fit(lr,3,cycle_len=1)
+    learn.fit(lr,3,cycle_len=1)
 
     #Show transforms
     mid = sz // 2
