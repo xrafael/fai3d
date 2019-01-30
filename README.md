@@ -1,10 +1,10 @@
 # fai3d
 A simple wrapper to 3D image random augmentation for the fast.ai (v.0.7) library.
 
-In the folder lib/ you will find dataset3D and transforms3D
+In the lib folder you will find dataset3D.py and transforms3D.py
 that are the main responsible to make the trick.
 
-Both classes extend from the same ones implemented in the original library
+Both files contain classes that extend from the same ones implemented in the original library
 to perform most of the basic transformations but for each slice of
 a volume.
 
@@ -16,9 +16,11 @@ of training a basic 3D CNN classifier.
 To run the example, first check that you have fast.ai (version 0.7) installed.
 Then create a data folder and unzip the data.zip files in it. This zip file contains
 few 3D volumes stored in numpy arrays (32x32x32) and a csv file
-with the annotations for each volume (id, class).
+with the annotations for each volume (id, class). Finally just call main.py file.
 
-Finally just call main.py file.
+If you find this code useful for your work, please don't forget to cite us:
+
+
 
 
 
