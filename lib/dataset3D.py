@@ -1,7 +1,7 @@
 from fastai.conv_learner import *
 from fastai.model import *
 
-from lib.transforms3D import Transform3D, CoordTransform3D
+from .transforms3D import Transform3D, CoordTransform3D
 
 class Image3DDataset(FilesIndexArrayDataset):
 
@@ -33,7 +33,6 @@ class Image3DDataset(FilesIndexArrayDataset):
 
             #Randomly select the plane of the cube
             axis = np.random.choice(3, 1)
-            print(p_transform,axis)
 
             #Looping through all slices of a plane of the cube
             for i in range(x.shape[0]):
