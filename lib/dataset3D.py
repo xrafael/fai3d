@@ -27,13 +27,17 @@ class Image3DDataset(FilesIndexArrayDataset):
             for t in tfm.tfms:
                 if isinstance(t, Transform3D) or isinstance(t, CoordTransform3D):
                     t.randomize_state()
-                    p_transform.append(1)#random.randint(0, 1))
+                    p_transform.append(random.randint(0, 1))
                 else:
                     p_transform.append(1)
 
-            #Looping through all slices of the cube
+            #Randomly select the plane of the cube
+            axis = np.random.choice(3, 1)
+            print(p_transform,axis)
+
+            #Looping through all slices of a plane of the cube
             for i in range(x.shape[0]):
-                img_x = x[i]
+                img_x = x[i] if axis == 0 else x[:,i,:] if axis == 1 else x[:,:,i]
                 img_y = y
 
                 #Looping through all transformations
@@ -46,7 +50,7 @@ class Image3DDataset(FilesIndexArrayDataset):
                 changed_x.append(img_x)
                 changed_y = img_y
 
-            changed_x = np.rollaxis(np.stack(changed_x, axis=0),1,0)
+            changed_x = np.stack(changed_x, axis=axis+1)
             return (changed_x, changed_y)
 
 class ImageClassifier3DData(ImageClassifierData):

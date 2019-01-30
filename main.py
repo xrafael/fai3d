@@ -32,12 +32,12 @@ if __name__ == '__main__':
 
     #Define some 3D augmentations
     aug_tfms_3D = [
-        Flip(1),
-        #Zoom(0,-0.5),
-        Lighting(0.3,0.3),
+        #Rotate(45),
+        #Flip(1),
+        #Zoom(0.1,-0.1),
+        Lighting(0.1,0.1),
         #Stretch(1.5,0),,
         #Blur(2),
-        Rotate(45),
         ]
 
     #Define data generator
