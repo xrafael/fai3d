@@ -1,4 +1,5 @@
 # fai3d
+
 A simple wrapper to 3D image random augmentation for the fast.ai (v.0.7) library.
 
 In the lib folder you will find dataset3D.py and transforms3D.py
@@ -20,6 +21,7 @@ with the annotations for each volume (id, class). Finally just call main.py file
 
 If you find this code useful for your work, please don't forget to cite us:
 
+[![DOI](https://zenodo.org/badge/168328059.svg)](https://zenodo.org/badge/latestdoi/168328059)
 
 
 
