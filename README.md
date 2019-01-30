@@ -15,9 +15,9 @@ library is used to build, find the learning rate, fit and visualize the results
 of training a basic 3D CNN classifier.
 
 To run the example, first check that you have fast.ai (version 0.7) installed.
-Then create a data folder and unzip the data.zip files in it. This zip file contains
-few 3D volumes stored in numpy arrays (32x32x32) and a csv file
-with the annotations for each volume (id, class). Finally just call main.py file.
+Then unzip data.zip in the data folder. This zip file contains a couple of folders
+with some few examples of 3D image volumes (32x32x32) stored in numpy arrays and a csv file
+with annotations for each volume (id, class). Finally just call main.py file.
 
 If you find this code useful for your work, please don't forget to cite us:
 
