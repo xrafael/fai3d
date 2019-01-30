@@ -1,5 +1,5 @@
 # fai3d
-A simple wrapper to 3D image random augmentation for the fast.ai library.
+A simple wrapper to 3D image random augmentation for the fast.ai (v.0.7) library.
 
 In the folder lib/ you will find dataset3D and transforms3D
 that are the main responsible to make the trick.
