@@ -3,7 +3,7 @@ from fastai.model import *
 
 from .transforms3D import Transform3D, CoordTransform3D
 
-class Image3DDataset(FilesIndexArrayDataset):
+class Image3DDataset(FilesArrayDataset):
 
     def get1item(self, idx):
         x ,y = self.get_x(idx) ,self.get_y(idx)
@@ -52,6 +52,19 @@ class Image3DDataset(FilesIndexArrayDataset):
             changed_x = np.stack(changed_x, axis=axis+1)
             return (changed_x, changed_y)
 
+class FilesIndexArrayDataset3D(Image3DDataset):
+    def get_c(self): return int(self.y.max())+1
+
+
+class FilesNhotArrayDataset3D(Image3DDataset):
+    @property
+    def is_multi(self): return True
+
+
+class FilesIndexArrayRegressionDataset3D(Image3DDataset):
+    def is_reg(self): return True
+
+
 class ImageClassifier3DData(ImageClassifierData):
 
     @classmethod
@@ -61,9 +74,9 @@ class ImageClassifier3DData(ImageClassifierData):
         ((val_fnames,trn_fnames),(val_y,trn_y)) = split_by_idx(val_idxs, np.array(fnames), y)
 
         test_fnames = read_dir(path, test_name) if test_name else None
-        if continuous: f = FilesIndexArrayRegressionDataset
+        if continuous: f = FilesIndexArrayRegressionDataset3D
         else:
-            f = Image3DDataset if len(trn_y.shape)==1 else FilesNhotArrayDataset
+            f = FilesIndexArrayDataset3D if len(trn_y.shape)==1 else FilesNhotArrayDataset3D
         datasets = cls.get_ds(f, (trn_fnames,trn_y), (val_fnames,val_y), tfms,
                                path=path, test=test_fnames)
         return cls(path, datasets, bs, num_workers, classes=classes)
