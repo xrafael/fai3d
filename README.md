@@ -18,7 +18,7 @@ Then unzip data.zip in the data folder. This zip file contains a couple of folde
 with some few examples of 3D image volumes (32x32x32) stored in numpy arrays and a csv file
 with annotations for each volume (id, class). Finally just call main.py file.
 
-If you find this code useful for your work, please don't forget to cite us:
+If you find this code useful for your research/work, please don't forget to cite us:
 
 [![DOI](https://zenodo.org/badge/168328059.svg)](https://zenodo.org/badge/latestdoi/168328059)
 
