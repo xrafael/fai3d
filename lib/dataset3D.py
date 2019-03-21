@@ -31,8 +31,11 @@ class Image3DDataset(FilesArrayDataset):
                 else:
                     p_transform.append(1)
 
-            #Randomly select the plane of the cube
-            axis = np.random.choice(3, 1)
+            #Randomly select the plane when input is a cube
+            if x.shape[0] == x.shape[1] == x.shape[2]:
+                axis = np.random.choice(3, 1)
+            else:
+                axis = 0
 
             #Looping through all slices of a plane of the cube
             for i in range(x.shape[0]):

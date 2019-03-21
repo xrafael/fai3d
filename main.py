@@ -42,11 +42,16 @@ if __name__ == '__main__':
 
     #Define data generator
     sz=32
-    bs=64
+    bs=4
     dataset.open_image = open_cube
     tfms = tfms_from_stats(None, sz, aug_tfms=aug_tfms_3D)
     data = ImageClassifier3DData.from_csv(PATH_CUBES_NEW, 'train', sub_train_csv, tfms = tfms, bs=bs, test_name='test',
                                         suffix='.npy', skip_header=True, num_workers=None)
+
+    #Test shapes
+    it = iter(data.trn_dl)
+    x,y = next(it)
+    print(x.shape, y.shape)
 
     #Define 3D model
     net = nn.Sequential(
