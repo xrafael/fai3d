@@ -11,7 +11,7 @@ but for each slice of a random plane of the volume.
 
 To know more about how to use it in your code, you can find the "main.py" file which implements an
 example of a 3D classification problem. In this file the fast.ai library is used to build, find
-the learning rate, fit and visualize the results of training a basic 3D CNN classifier.
+the learning ration, fit and visualize the results of training a basic 3D CNN classifier.
 
 To run the example, first check that you have fast.ai (version 0.7) installed.
 Then unzip data.zip in the data folder. This zip file contains a couple of folders
