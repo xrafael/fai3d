@@ -3,7 +3,7 @@ from fastai.model import *
 
 from .transforms3D import Transform3D, CoordTransform3D
 
-class Image3DDataset(FilesArrayDataset):
+class DualImage3DDataset(FilesArrayDataset):
 
     def get1item(self, idx):
         x ,y = self.get_x(idx) ,self.get_y(idx)
@@ -15,15 +15,13 @@ class Image3DDataset(FilesArrayDataset):
             return np.stack(xs) ,ys
         return self.get1item(idx)
 
-    def get(self, tfm, x, y):
+    def get(self, tfm, xs, y):
         if tfm is None:
-            return (x,y)
+            return (xs,y)
         else:
-            p_transform = []
-            changed_x = []
-            changed_y = None
 
-            #Prepare random 3D transformations
+            # Prepare random 3D transformations
+            p_transform = []
             for t in tfm.tfms:
                 if isinstance(t, Transform3D) or isinstance(t, CoordTransform3D):
                     t.randomize_state()
@@ -31,40 +29,50 @@ class Image3DDataset(FilesArrayDataset):
                 else:
                     p_transform.append(1)
 
-            #Randomly select the plane when input is a cube
-            if x.shape[0] == x.shape[1] == x.shape[2]:
+            # Randomly select the plane when input is a cube
+            if xs[0].shape[0] == xs[0].shape[1] == xs[0].shape[2]:
                 axis = np.random.choice(3, 1)
             else:
                 axis = 0
 
-            #Looping through all slices of a plane of the cube
-            for i in range(x.shape[0]):
-                img_x = x[i] if axis == 0 else x[:,i,:] if axis == 1 else x[:,:,i]
-                img_y = y
+            #Apply transforms
+            all_changed_x = []
+            for x in xs:
+                changed_x = []
+                changed_y = None
 
-                #Looping through all transformations
-                for j,t in enumerate(tfm.tfms):
-                    if p_transform[j]:
-                        if len(img_x.shape) == 2:
-                            img_x = np.expand_dims(img_x, axis=2)
-                        img_x, img_y = t(img_x, img_y)
+                #Looping through all slices of a plane of the cube
+                for i in range(x.shape[0]):
+                    img_x = x[i] if axis == 0 else x[:,i,:] if axis == 1 else x[:,:,i]
+                    img_y = y
 
-                changed_x.append(img_x)
-                changed_y = img_y
+                    #Looping through all transformations
+                    for j,t in enumerate(tfm.tfms):
+                        if p_transform[j]:
+                            if len(img_x.shape) == 2:
+                                img_x = np.expand_dims(img_x, axis=2)
+                            img_x, img_y = t(img_x, img_y)
 
-            changed_x = np.stack(changed_x, axis=axis+1)
-            return (changed_x, changed_y)
+                    changed_x.append(img_x)
+                    changed_y = img_y
 
-class FilesIndexArrayDataset3D(Image3DDataset):
+                changed_x = np.stack(changed_x, axis=axis+1)
+                all_changed_x.append(changed_x)
+
+            all_changed_x = np.array(all_changed_x)
+            return (all_changed_x, changed_y)
+
+
+class FilesIndexArrayDataset3D(DualImage3DDataset):
     def get_c(self): return int(self.y.max())+1
 
 
-class FilesNhotArrayDataset3D(Image3DDataset):
+class FilesNhotArrayDataset3D(DualImage3DDataset):
     @property
     def is_multi(self): return True
 
 
-class FilesIndexArrayRegressionDataset3D(Image3DDataset):
+class FilesIndexArrayRegressionDataset3D(DualImage3DDataset):
     def is_reg(self): return True
 
 
