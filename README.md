@@ -6,12 +6,12 @@ In the lib folder you will find dataset3D.py and transforms3D.py
 that are the main responsible to make the trick.
 
 Both files contain classes that extend from the same ones implemented in the original library
-to perform most of the basic transformations (e.g. rotate, zoom, lighting, blur, crop and Flip)
+to perform most of the basic transformations (e.g. rotation, zoom, lighting, blur, crop and flip)
 but for each slice of a random plane of the volume.
 
-To know more about how to use it in your code, you can find the "main.py" file which implements an
+To know more about how to use it in your code, go to "main.py" file which implements an
 example of a 3D classification problem. In this file the fast.ai library is used to build, find
-the learning rate, fit and visualize the results of training a basic 3D CNN classifier.
+the learning rate, fit and visualize the results of a shallow 3D CNN.
 
 To run the example, first check that you have fast.ai (version 0.7) installed.
 Then unzip data.zip in the data folder. This zip file contains a couple of folders
