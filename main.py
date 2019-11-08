@@ -32,26 +32,43 @@ if __name__ == '__main__':
 
     #Define some 3D augmentations
     aug_tfms_3D = [
-        Rotate(45),
+        Crop(32,r=28, c=28),
+        #Rotate(45),
         #Flip(1),
         #Zoom(0.1,-0.1),
-        Lighting(0.1,0.1),
+        #Lighting(0.1,0.1),
         #Stretch(1.5,0),,
         #Blur(2),
         ]
 
     #Define data generator
     sz=32
-    bs=4
+    bs=1
     dataset.open_image = open_cube
     tfms = tfms_from_stats(None, sz, aug_tfms=aug_tfms_3D)
     data = ImageClassifier3DData.from_csv(PATH_CUBES_NEW, 'train', sub_train_csv, tfms = tfms, bs=bs, test_name='test',
-                                        suffix='.npy', skip_header=True, num_workers=None)
+                                        suffix='.npy', skip_header=True, num_workers=0)
 
     #Test shapes
     it = iter(data.trn_dl)
     x,y = next(it)
     print(x.shape, y.shape)
+
+    #Show transforms
+    mid = sz // 2
+
+    for x, _ in iter(data.trn_dl):
+        print("Batch size of", len(x))
+        for s in range(len(x)):
+            cb = x[s][0].reshape(sz, sz, sz)
+            plots([
+                cb[mid-1, :, :], cb[mid, :, :], cb[mid+1, :, :],
+                cb[:, mid - 1, :], cb[:, mid, :], cb[:, mid + 1, :],
+                cb[:, :, mid - 1], cb[:, :, mid], cb[:, :, mid + 1]
+                   ],
+                  figsize=(12, 18), rows=3, titles=None)
+            plt.show()
+
 
     #Define 3D model
     net = nn.Sequential(
@@ -80,17 +97,3 @@ if __name__ == '__main__':
 
     #Train 3D model
     learn.fit(lr,3,cycle_len=1)
-
-    #Show transforms
-    mid = sz // 2
-    for x, _ in iter(data.trn_dl):
-        print("Batch size of", len(x))
-        for s in range(len(x)):
-            cb = x[s][0].reshape(sz, sz, sz)
-            plots([
-                cb[mid-1, :, :], cb[mid, :, :], cb[mid+1, :, :],
-                cb[:, mid - 1, :], cb[:, mid, :], cb[:, mid + 1, :],
-                cb[:, :, mid - 1], cb[:, :, mid], cb[:, :, mid + 1]
-                   ],
-                  figsize=(12, 18), rows=3, titles=None)
-            plt.show()

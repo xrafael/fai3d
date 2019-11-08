@@ -24,21 +24,31 @@ class Crop(CoordTransform3D):
             type of y transformation.
     """
 
-    def __init__(self, targ_sz, r=0.5, c=0.5, tfm_y=TfmType.NO, sz_y=None):
+    def __init__(self, targ_sz, r=0.5, c=0.5, tfm_y=TfmType.NO, sz_y=None, interpolation = cv2.BORDER_CONSTANT):
         super().__init__(tfm_y)
         self.targ_sz, self.sz_y = targ_sz, sz_y
         self.r, self.c = r, c
+        self.interpolation = interpolation
 
     def randomize_state(self):
         self.store.rand_r = random.uniform(0, 1)
         self.store.rand_c = random.uniform(0, 1)
 
     def do_transform(self, x, is_y):
-        r, c, *_ = x.shape
+        #r, c, *_ = x.shape
         sz = self.sz_y if is_y else self.targ_sz
-        start_r = np.floor(self.store.rand_r * (r - sz)).astype(int)
-        start_c = np.floor(self.store.rand_c * (c - sz)).astype(int)
-        return crop(x, start_r, start_c, sz)
+        start_r = np.floor(self.store.rand_r * (sz-self.r)).astype(int)
+        start_c = np.floor(self.store.rand_c * (sz-self.c)).astype(int)
+        img_crop = crop(x, start_r, start_c, sz)
+
+        #Padding at random start
+        if self.store.rand_r > 0.5:
+            img_crop = np.expand_dims(cv2.copyMakeBorder(img_crop, start_r, 0, start_c, 0, self.interpolation),2)
+        else:
+            img_crop = np.expand_dims(cv2.copyMakeBorder(img_crop, 0, start_r, 0, start_c, self.interpolation), 2)
+
+        return img_crop
+
 
 
 class Rotate(CoordTransform3D):
