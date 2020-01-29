@@ -32,7 +32,8 @@ if __name__ == '__main__':
 
     #Define some 3D augmentations
     aug_tfms_3D = [
-        Crop(32,r=28, c=28),
+        Cutout(3,5)
+        #Crop(32,r=28, c=28),
         #Rotate(45),
         #Flip(1),
         #Zoom(0.1,-0.1),
@@ -53,6 +54,7 @@ if __name__ == '__main__':
     it = iter(data.trn_dl)
     x,y = next(it)
     print(x.shape, y.shape)
+    print("After tfm:", x.max(), x.min(),x.mean())
 
     #Show transforms
     mid = sz // 2
