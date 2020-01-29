@@ -172,3 +172,44 @@ class Blur(Transform3D):
 
     def do_transform(self, x, is_y):
         return cv2.GaussianBlur(src=x, ksize=self.store.kernel, sigmaX=0)
+
+
+class Cutout(Transform3D):
+    """ Randomly masks squares of size length on the image.
+    https://arxiv.org/pdf/1708.04552.pdf
+
+    Arguments:
+    n_holes: number of squares
+    length: size of the square
+    p: probability to apply cutout
+    tfm_y: type of y transform
+    """
+
+    def __init__(self, n_holes, length, tfm_y=TfmType.NO):
+        super().__init__(tfm_y)
+        self.n_holes, self.length = n_holes, length
+
+    def randomize_state(self):
+        self.store.r_rand = [random.random() for i in range(self.n_holes)]
+        self.store.c_rand = [random.random() for i in range(self.n_holes)]
+
+    def do_transform(self, img, is_y):
+        return cutout(img, self.n_holes, self.length, self.store.r_rand, self.store.c_rand)
+
+def cutout(im, n_holes, length,r_rand,c_rand):
+    """ Cut out n_holes number of square holes of size length in image at random locations. Holes may overlap. """
+    r, c, *_ = im.shape
+    mask = np.ones((r, c), np.int32)
+    for n in range(n_holes):
+        y = int(r * r_rand[n])
+        x = int(c * c_rand[n])
+
+        y1 = int(np.clip(y - length / 2, 0, r))
+        y2 = int(np.clip(y + length / 2, 0, r))
+        x1 = int(np.clip(x - length / 2, 0, c))
+        x2 = int(np.clip(x + length / 2, 0, c))
+        mask[y1: y2, x1: x2] = 0.
+
+    mask = mask[:, :, None]
+    im = im * mask
+    return im
