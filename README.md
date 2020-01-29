@@ -1,6 +1,6 @@
 # fai3d
 
-A simple wrapper to 3D image random augmentation for fast.ai (v.0.7).
+A simple python library for 3D image data augmentation.
 
 In the lib folder you will find dataset3D.py and transforms3D.py
 that are the main responsible to make the trick.
