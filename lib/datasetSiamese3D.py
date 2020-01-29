@@ -7,7 +7,7 @@ class DualImage3DDataset(FilesArrayDataset):
 
     def get1item(self, idx):
         x ,y = self.get_x(idx) ,self.get_y(idx)
-        return self.get(self.transform, x, y)
+        return self.get(self.transform, x, y), idx
 
     def __getitem__(self, idx):
         if isinstance(idx ,slice):
